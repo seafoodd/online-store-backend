@@ -37,7 +37,7 @@ class DeviceController {
     }
   }
 
-  async getAll(req, res) {
+  async getAll(req, res, next) {
     try {
       let { brandId, typeId, limit, page } = req.query;
       page = page > 0 ? page : 1;
@@ -75,7 +75,7 @@ class DeviceController {
     }
   }
 
-  async getOne(req, res) {
+  async getOne(req, res, next) {
     try {
       const { id } = req.params;
       const device = await Device.findOne({
