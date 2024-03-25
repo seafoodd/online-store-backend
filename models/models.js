@@ -70,7 +70,7 @@ Rating.belongsTo(Device);
 CartDevice.hasOne(Device); //       If something breaks,
 Device.belongsTo(CartDevice); //    this probably caused it
 
-Device.hasMany(DeviceInfo);
+Device.hasMany(DeviceInfo, { as: 'info' });
 DeviceInfo.belongsTo(Device);
 
 Type.belongsToMany(Brand, { through: TypeBrand });
