@@ -67,8 +67,8 @@ Device.belongsTo(Brand);
 Device.hasMany(Rating);
 Rating.belongsTo(Device);
 
-CartDevice.hasOne(Device); //       If something breaks,
-Device.belongsTo(CartDevice); //    this probably caused it
+CartDevice.belongsTo(Device);
+Device.hasMany(CartDevice);
 
 Device.hasMany(DeviceInfo, { as: 'info' });
 DeviceInfo.belongsTo(Device);
