@@ -9,8 +9,11 @@ class DeviceController {
       const { name, price, brandId, typeId, info } = req.body;
       const { img } = req.files;
       let fileName = uuid.v4() + '.jpg';
-      img.mv(path.resolve(__dirname, '..', 'static', fileName));
 
+      const candidate = await Device.findOne({ where: { name } });
+      if (candidate) {
+        return next(ApiError.badRequest('Такое устройство уже существует'));
+      }
       const device = await Device.create({
         name,
         price,
@@ -30,6 +33,8 @@ class DeviceController {
           });
         });
       }
+
+      img.mv(path.resolve(__dirname, '..', 'static', fileName));
 
       return res.json(device);
     } catch (error) {
