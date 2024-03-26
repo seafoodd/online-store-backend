@@ -1,7 +1,8 @@
-const { Device, DeviceInfo } = require('../models/models');
+const { Device, DeviceInfo, Cart, CartDevice } = require('../models/models');
 const ApiError = require('../error/ApiError');
 const uuid = require('uuid');
 const path = require('path');
+const jwt = require('jsonwebtoken');
 
 class DeviceController {
   async create(req, res, next) {
@@ -79,7 +80,6 @@ class DeviceController {
       next(ApiError.badRequest(error.message));
     }
   }
-
   async getOne(req, res, next) {
     try {
       const { id } = req.params;
@@ -88,6 +88,22 @@ class DeviceController {
         include: [{ model: DeviceInfo, as: 'info' }],
       });
       return res.json(device);
+    } catch (error) {
+      next(ApiError.badRequest(error.message));
+    }
+  }
+  async addToCart(req, res, next) {
+    try {
+      const token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      const { id } = req.params;
+      const cart = await Cart.findOne({ where: { userId: decoded.id } });
+
+      const cartDevice = await CartDevice.create({
+        cartId: cart.id,
+        deviceId: id,
+      });
+      return res.json(cartDevice);
     } catch (error) {
       next(ApiError.badRequest(error.message));
     }

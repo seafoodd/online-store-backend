@@ -6,6 +6,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/', checkRole('ADMIN'), DeviceController.create);
 router.get('/', DeviceController.getAll);
-router.get('/:id', authMiddleware, DeviceController.getOne);
+router.get('/:id', DeviceController.getOne); // get for getting device
+router.post('/:id', authMiddleware, DeviceController.addToCart); // Post for adding to cart
 
 module.exports = router;
