@@ -2,7 +2,6 @@ const { Device, DeviceInfo } = require('../models/models');
 const ApiError = require('../error/ApiError');
 const uuid = require('uuid');
 const path = require('path');
-const jwt = require('jsonwebtoken');
 
 class DeviceController {
   async create(req, res, next) {

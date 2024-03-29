@@ -1,12 +1,16 @@
 const { Cart, CartDevice } = require('../models/models');
 const ApiError = require('../error/ApiError');
+const jwt = require('jsonwebtoken');
 
 class CartController {
   
   async getAll(req, res, next) {
     try {
-      const brands = await Brand.findAll();
-      return res.json(brands);
+      const token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+      const cartDevices = await CartDevice.findAndCountAll({where: {cartId: decoded.id}});
+      return res.json(cartDevices);
     } catch (error) {
       next(ApiError.badRequest(error.message));
     }
