@@ -1,3 +1,7 @@
+# brbrbr
+static/
+cert/
+
 # Logs
 logs
 *.log
